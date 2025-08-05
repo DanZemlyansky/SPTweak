@@ -29,7 +29,6 @@
 ### 🔧 Requirements
 
 - Python 3.9+
-- Node.js (optional — only if using Tailwind)
 - Git (optional)
 
 ### ▶️ Run Locally
