@@ -1,79 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>SPTweak</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SPTweak</title>
 
-<style>
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 20px;
-    background: #f0f2f5;
-    color: #333;
-    max-width: 760px;
-    width: 100%;
-  }
-  button {
-    background-color: #0078d4;
-    border: none;
-    color: white;
-    padding: 12px 24px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-bottom: 20px;
-  }
-  button:hover {
-    background-color: #005a9e;
-  }
-  select, textarea {
-    width: 100%;
-    margin-bottom: 15px;
-    font-size: 14px;
-    padding: 8px;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  select {
-    height: 30px;
-  }
-  textarea {
-    height: 300px;
-    font-family: monospace;
-    resize: vertical;
-  }
-  label {
-    font-weight: bold;
-    display: block;
-    margin-bottom: 5px;
-  }
-</style>
-</head>
-<body>
-  <button>📁 Select SPT mods Folder</button>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 20px;
+        background: #f0f2f5;
+        color: #333;
+        max-width: 850px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+      }
+      button {
+        background-color: #0078d4;
+        border: none;
+        color: white;
+        padding: 12px 24px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+        margin-bottom: 20px;
+      }
+      button:hover {
+        background-color: #005a9e;
+      }
+      select,
+      textarea {
+        width: 100%;
+        margin-bottom: 15px;
+        font-size: 14px;
+        padding: 8px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      select {
+        height: 30px;
+      }
+      textarea {
+        height: 300px;
+        font-family: monospace;
+        resize: vertical;
+      }
+      label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+      }
+      #file-select {
+        height: 50px;
+      }
+    </style>
+  </head>
+  <body>
+    <button onclick="selectDirectoryAndUpdateConfigList()">
+      📁 Select SPT mods Folder
+    </button>
 
-  <label for="file-select">Config Files:</label>
-  <select id="file-select">
-    <option>example1.json</option>
-    <option>example2.json</option>
-  </select>
+    <label for="file-select">Config Files:</label>
+    <select id="file-select"></select>
 
-  <label for="editor">Config Editor:</label>
-  <textarea id="editor" placeholder="Select a config file to load its content..."></textarea>
+    <label for="editor">Config Editor:</label>
+    <textarea
+      id="editor"
+      placeholder="Select a config file to load its content..."
+    ></textarea>
 
-  <button>💾 Save</button>
+    <button onclick="saveConfig()">💾 Save</button>
+
+    <script>
+
+const populateConfigs = async () => {
+  const select = document.getElementById('file-select');
+  const configs = await window.pywebview.api.get_mod_configs();
+
+    const optionsHTML = configs.map(config => 
+      `<option value="${config.mod_name}" class="selectOption">${config.mod_name}</option>`
+    ).join('');
+
+    select.innerHTML = optionsHTML;
+}
 
 
+// window.addEventListener("pywebviewready", async function () {
+//   const savedPath = localStorage.getItem("sptInstallDir");
 
-  <script>
+//   if (savedPath) {
+//     const result = await window.pywebview.api.set_spt_install_dir(savedPath);
+//     await window.pywebview.api.scrape_configs_from_mod_direcory();
+//     const configs = await window.pywebview.api.get_mod_configs();
+//     populateConfigs(configs);
+//   }
+// });      
 
 
+      //save the config to the selected file
+      const saveConfig = async () => {
+        //path and json from the textarea edited
+        const result = await window.pywebview.api.write_config(path, json);
+      };
 
+      const selectDirectoryAndUpdateConfigList = async () => {
+        const result = await window.pywebview.api.select_SPT_mods_directory();
+        console.log("selected folder path: ", result);
 
-
-
-  </script>
-</body>
+        if (result.status === "success") {
+          localStorage.setItem("sptInstallDir", result.sptInstallDir);
+          await window.pywebview.api.scrape_configs_from_mod_direcory();
+          await populateConfigs();
+        } else {
+          console.error("Failed to select directory:", result.error);
+        }
+      };
+    </script>
+  </body>
 </html>
