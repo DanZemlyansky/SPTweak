@@ -8,15 +8,13 @@ import sys
 
 
 if getattr(sys, "frozen", False):
-    # Running in a bundle created by PyInstaller
     base_path = sys._MEIPASS
 else:
     base_path = os.path.abspath(".")
 
 template_folder = os.path.join(base_path, "templates")
-static_folder = os.path.join(base_path, "static")
 
-app = Flask(__name__, template_folder=template_folder, static_folder=static_folder)
+app = Flask(__name__, template_folder=template_folder)
 
 window = None
 sptInstallDir = None  # let user set this
@@ -137,9 +135,9 @@ def set_spt_install_dir(path):
         for folder in os.listdir(path):
             full_path = os.path.join(path, folder)
             modFolders.append(full_path)
-            return {"status": "success", "sptInstallDir": sptInstallDir}
-        else:
-            return {"status": "error", "error": "Invalid path"}
+        return {"status": "success", "sptInstallDir": sptInstallDir}  
+    else:
+        return {"status": "error", "error": "Invalid path"}
 
 
 if __name__ == "__main__":
