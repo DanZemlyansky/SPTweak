@@ -1,13 +1,14 @@
 # 🛠️ SPTweak – Local Config Editor for SPT Mods
 
-**SPTweak** is a desktop-style tool built with Python, Flask, and PyWebView that helps you easily browse, view, and edit `.json` config files from your installed SPT mods.
+**SPTweak** is a desktop-style tool built with Python, Flask, and PyWebView that helps you easily browse, view, and edit `.json` config files from your installed SPT mods. built this to get familiar with flask and because i have a ton of mods and i find myself 
+editing config files alot 😅
 
 ---
 
 ## 💡 Features
 
-- 📁 Pick your local SPT install folder
-- 🔍 Scans all `user/mods/**` folders for `.json` config files
+- 📁 Pick your local SPT mods folder
+- 🔍 Scans all mod folders for `.json` config files
 - 📝 View and edit JSON configs in a simple interface
 - 💾 Save changes directly back to the correct mod folder
 - 🖥️ Packaged with a native window — no browser tabs required
