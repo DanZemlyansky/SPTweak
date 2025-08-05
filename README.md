@@ -4,7 +4,7 @@
 editing config files alot 😅
 
 
-**requires an spt install or atleast a folder with a config.json or /config/config.json path**
+*requires an spt install or atleast a folder with a config.json or /config/config.json path*
 ---
 
 ## 💡 Features
