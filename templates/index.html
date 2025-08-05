@@ -65,7 +65,7 @@
     </button>
 
     <label for="file-select">Config Files:</label>
-    <select id="file-select"></select>
+    <select onchange="loadConfig()" id="file-select"></select>
 
     <label for="editor">Config Editor:</label>
     <textarea
@@ -76,36 +76,75 @@
     <button onclick="saveConfig()">💾 Save</button>
 
     <script>
+      const populateConfigs = async () => {
+        const select = document.getElementById("file-select");
+        const editor = document.getElementById("editor");
+        const configs = await window.pywebview.api.get_mod_configs();
 
-const populateConfigs = async () => {
-  const select = document.getElementById('file-select');
-  const configs = await window.pywebview.api.get_mod_configs();
+        const optionsHTML = configs
+          .map(
+            (config) =>
+              `<option value="${config.mod_name}" class="selectOption">${config.mod_name}</option>`
+          )
+          .join("");
 
-    const optionsHTML = configs.map(config => 
-      `<option value="${config.mod_name}" class="selectOption">${config.mod_name}</option>`
-    ).join('');
+        select.innerHTML = optionsHTML;
+      };
 
-    select.innerHTML = optionsHTML;
-}
+      const loadConfig = async () => {
+        const select = document.getElementById("file-select");
+        const editor = document.getElementById("editor");
+        const configs = await window.pywebview.api.get_mod_configs();
 
+        const selectedMod = select.value;
+        const selectedConfig = configs.find(
+          (config) => config.mod_name === selectedMod
+        );
 
-// window.addEventListener("pywebviewready", async function () {
-//   const savedPath = localStorage.getItem("sptInstallDir");
-
-//   if (savedPath) {
-//     const result = await window.pywebview.api.set_spt_install_dir(savedPath);
-//     await window.pywebview.api.scrape_configs_from_mod_direcory();
-//     const configs = await window.pywebview.api.get_mod_configs();
-//     populateConfigs(configs);
-//   }
-// });      
-
+        if (selectedConfig) {
+          editor.value = JSON.stringify(selectedConfig.config_data, null, 2);
+        } else {
+          editor.value = "";
+        }
+      };
 
       //save the config to the selected file
       const saveConfig = async () => {
-        //path and json from the textarea edited
-        const result = await window.pywebview.api.write_config(path, json);
+        const select = document.getElementById("file-select");
+        const editor = document.getElementById("editor");
+        const configs = await window.pywebview.api.get_mod_configs();
+
+        const selectedMod = select.value;
+        const selectedConfig = configs.find(
+          (config) => config.mod_name === selectedMod
+        );
+
+        if (selectedConfig) {
+          try {
+            const data = JSON.parse(editor.value);
+            await window.pywebview.api.write_config(
+              selectedConfig.config_path,
+              data
+            );
+            alert("Config saved successfully!");
+          } catch (e) {
+            alert("Invalid JSON! Please fix errors before saving.");
+          }
+        } else {
+          alert("Please select a config file first.");
+        }
       };
+
+      // window.addEventListener("pywebviewready", async function () {
+      //   const savedPath = localStorage.getItem("sptInstallDir");
+
+      //   if (savedPath) {
+      //     const result = await window.pywebview.api.set_spt_install_dir(savedPath);
+      //     await window.pywebview.api.scrape_configs_from_mod_direcory();
+      //     const configs = await window.pywebview.api.get_mod_configs();
+      //     populateConfigs(configs);
+      //   }
+      // });
 
       const selectDirectoryAndUpdateConfigList = async () => {
         const result = await window.pywebview.api.select_SPT_mods_directory();
