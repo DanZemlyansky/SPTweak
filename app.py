@@ -17,9 +17,10 @@ template_folder = os.path.join(base_path, "templates")
 app = Flask(__name__, template_folder=template_folder)
 
 window = None
-sptInstallDir = None  # let user set this
-modFolders = []  # pass mod object with data
+sptInstallDir = None  #let user set this
+modFolders = []  #pass mod object with data
 modConfigs = []
+bepinex_mods
 
 
 class Api:
@@ -35,7 +36,6 @@ class Api:
     def set_spt_install_dir(self, path):
         return set_spt_install_dir()
 
-    # Getters for Flask API
     def get_spt_install_dir(self):
         return sptInstallDir
 
@@ -55,7 +55,14 @@ def run_flask():
     app.run(host="127.0.0.1", port=5000, debug=False)
 
 
+def scrape_bepinex(): #scrape and append bepinex configs 
+    #use sptinstallDir to get relative bepinex to root server mods folder.
+    # it would be user/mods/ up two folders then through root -> bepinex -> config -> all files there
+    
+    return
+
 def scrape_configs_from_mod_direcory():
+    modConfigs.clear()
     for folder in modFolders:
         possible_paths = [
             os.path.join(folder, "config.json"),
@@ -71,13 +78,29 @@ def scrape_configs_from_mod_direcory():
             try:
                 with open(config_path, "r", encoding="utf-8") as file:
                     config_data = json.load(file)
-
+                    
+                possible_readmes = ["README.md" , "readme.md" , "README.txt" , "readme.txt"]
+                readme_path = None
+                
+                for readme in possible_readmes:
+                    candidate = os.path.join(folder , readme)
+                    if os.path.isfile(candidate):
+                        readme_path = candidate
+                        break
+                        
+                readme_content= None
+                if readme_path:
+                    with open(readme_path , 'r' , encoding='utf-8') as f:
+                        readme_content = f.read()        
+                
                 modConfigs.append(
                     {
                         "mod_name": os.path.basename(folder),
                         "mod_path": folder,
+                        "mod_readme":readme_content,
                         "config_path": config_path,
                         "config_data": config_data,
+                        "mod_type": "server"
                     }
                 )
                 print(f"Loaded config from {config_path}")
@@ -90,6 +113,7 @@ def scrape_configs_from_mod_direcory():
 
 # get mod dirs from spt user/mods directory
 def select_SPT_mods_directory():
+    modFolders.clear()
     global sptInstallDir, modFolders
     result = window.create_file_dialog(webview.FOLDER_DIALOG)
     if result:
