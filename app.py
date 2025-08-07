@@ -20,7 +20,7 @@ window = None
 sptInstallDir = None  #let user set this
 modFolders = []  #pass mod object with data
 modConfigs = []
-bepinex_mods
+bepinex_mods = []
 
 
 class Api:
@@ -113,8 +113,8 @@ def scrape_configs_from_mod_direcory():
 
 # get mod dirs from spt user/mods directory
 def select_SPT_mods_directory():
-    modFolders.clear()
     global sptInstallDir, modFolders
+    modFolders.clear()
     result = window.create_file_dialog(webview.FOLDER_DIALOG)
     if result:
         sptInstallDir = result[0]

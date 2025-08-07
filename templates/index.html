@@ -130,7 +130,7 @@
       </section>
     </main>
   </body>
-  
+
     <script>
       const populateConfigs = async () => {
         const select = document.getElementById("file-select");
@@ -209,6 +209,7 @@
           localStorage.setItem("sptInstallDir", result.sptInstallDir);
           await window.pywebview.api.scrape_configs_from_mod_direcory();
           await populateConfigs();
+          await loadConfig();
         } else {
           console.error("Failed to select directory:", result.error);
         }
