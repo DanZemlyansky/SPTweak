@@ -8,7 +8,7 @@
 ## 💡 Use
 
 - 📁 Pick your local SPT mods folder
-- 🔍 Scans all mod folders for `.json` config files
+- 🔍 Scans all mod folders for `.json` or `jsonc` config files
 - 📝 View and edit what you need
 - 💾 Save changes and save opening 10 windows in explorer
 
