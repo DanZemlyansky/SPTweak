@@ -1,6 +1,6 @@
 # 🛠️ SPTweak – Local Config Editor for SPT Mods
 
-**SPTweak** is a local mod config management tool for [Single Player Tarkov](https://github.com/sp-tarkov) built with Python, Flask, and PyWebView that helps you easily browse, view, and edit `.json` , `jsonc` config files from your installed SPT mods. built this to get familiar with flask and because i have a ton of mods on my server and i find myself editing config files alot 😅
+**SPTweak** is a local mod config management tool for [Single Player Tarkov](https://github.com/sp-tarkov) built with Python, Flask, and PyWebView that helps you browse, view, and edit `.json` , `jsonc` config files from your installed SPT mods. built this to get familiar with flask and because i have a ton of mods on my server and i find myself editing config files alot 😅
 
 
 ---
