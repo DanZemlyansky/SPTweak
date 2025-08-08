@@ -6,7 +6,7 @@
     <title>SPTweak</title>
 
     <style>
-      >
+    
       * {
         box-sizing: border-box;
       }
@@ -53,6 +53,8 @@
         justify-content: flex-start;
         font-size: 14px;
         color: #666;
+        overflow-y: scroll;
+        max-height: 500px;
       }
 
       button {
@@ -114,6 +116,7 @@
           <textarea
             id="editor"
             placeholder="Select a config file to load its content..."
+            spellcheck="false" 
           ></textarea>
         </div>
 
@@ -122,11 +125,11 @@
 
       <section class="readMeContainer">
         <h3>📘 README</h3>
-        <p>
-          This tool helps you select, view, and edit configuration files from
-          your SPT mods folder. Use the buttons to load or save your changes.
+        <p id="readmeField">
+          This tool helps you select, view, and edit configuration files from your SPT mods folder. 
+          Use the buttons to load or save your changes.
         </p>
-        <p>Future versions will support JSON schema validation and backups.</p>
+        <p id="readmeDefaultSnippet">Future versions will support JSON schema validation and backups.</p>
       </section>
     </main>
   </body>
@@ -150,6 +153,8 @@
       const loadConfig = async () => {
         const select = document.getElementById("file-select");
         const editor = document.getElementById("editor");
+        const readmeField = document.getElementById("readmeField");
+        const readmeDefaultSnippet = document.getElementById("readmeDefaultSnippet");
         const configs = await window.pywebview.api.get_mod_configs();
 
         const selectedMod = select.value;
@@ -159,8 +164,11 @@
 
         if (selectedConfig) {
           editor.value = JSON.stringify(selectedConfig.config_data, null, 2);
+          readmeField.textContent = selectedConfig.mod_readme || "";          
+          readmeDefaultSnippet.textContent = ""
         } else {
-          editor.value = "";
+          editor.textContent = "";
+          readmeField.textContent = "This tool helps you select, view, and edit configuration files from your SPT mods folder. Use the buttons to load or save your changes."
         }
       };
       // add support for toggling to bepinex configs
@@ -191,7 +199,7 @@
       };
 
       // window.addEventListener("pywebviewready", async function () {
-      //   const savedPath = localStorage.getItem("sptInstallDir");
+      //   const savedPath = localStorage.getItem("spt_dir");
 
       //   if (savedPath) {
       //     const result = await window.pywebview.api.set_spt_install_dir(savedPath);
@@ -206,7 +214,7 @@
         console.log("selected folder path: ", result);
 
         if (result.status === "success") {
-          localStorage.setItem("sptInstallDir", result.sptInstallDir);
+          localStorage.setItem("spt_dir", result.spt_dir);
           await window.pywebview.api.scrape_configs_from_mod_direcory();
           await populateConfigs();
           await loadConfig();
