@@ -20,6 +20,7 @@
 - ~~add a sidebar readme display associated with each mod so its easier to reference what everything does~~
 - improve error handling
 - improve general editor experience
+- tidy up .cfg files
 ---
 
 ## 🧰 Technologies Used
