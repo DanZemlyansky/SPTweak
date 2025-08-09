@@ -40,11 +40,11 @@
 - Git (optional)
 
 ### ▶️ Run Locally
+    #clone the repo
+    git clone https://github.com/DanZemlyansky/SPTweak.git
+    cd SPTweak
 
-git clone https://github.com/DanZemlyansky/SPTweak.git
-cd SPTweak
-
-    Create and activate a virtual environment (recommended):
+    #Create and activate a virtual environment (recommended):
 
     On Windows:
 
@@ -56,11 +56,11 @@ cd SPTweak
     python3 -m venv venv
     source venv/bin/activate
 
-    Install dependencies:
+    #Install dependencies:
 
     pip install -r requirements.txt
 
-    Run the Flask server:
+    #Run the Flask server:
 
     python app.py
 
