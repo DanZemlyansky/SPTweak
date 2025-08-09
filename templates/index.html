@@ -1,291 +1,387 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SPT Config Tool</title>
     <style>
-        * {
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: "Inter", sans-serif;
-            margin: 0;
-            background: #f5f7fa;
-            color: #333;
-            height: 100vh;
-            overflow: hidden;
-        }
-        
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        margin: 0;
+        background: #f5f7fa;
+        color: #333;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      main {
+        display: flex;
+        flex-direction: row;
+        height: 100vh;
+        background: #ffffff;
+      }
+
+      .mainGroupContainer {
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        gap: 16px;
+        flex: 2;
+        min-width: 0;
+      }
+
+      .readMeContainer {
+        padding: 20px;
+        border-left: 1px solid #e0e0e0;
+        flex: 1;
+        font-size: 13px;
+        color: #666;
+        overflow-y: auto;
+        background: #fafbfc;
+        min-width: 250px;
+      }
+
+      .toolbar {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .toggle-group {
+        display: flex;
+        background: #f3f4f6;
+        border-radius: 8px;
+        padding: 2px;
+      }
+
+      .toggle-btn {
+        padding: 8px 16px;
+        font-size: 13px;
+        font-weight: 500;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        background: transparent;
+        color: #6b7280;
+      }
+
+      .toggle-btn.active {
+        background: #2563eb;
+        color: white;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+
+      .primary-btn {
+        background-color: #2563eb;
+        border: none;
+        color: white;
+        padding: 10px 16px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: background-color 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .primary-btn:hover {
+        background-color: #1e4bb8;
+      }
+
+      .save-btn {
+        background-color: #10b981;
+      }
+
+      .save-btn:hover {
+        background-color: #059669;
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      label {
+        font-weight: 600;
+        font-size: 13px;
+        color: #374151;
+      }
+
+      select {
+        width: 100%;
+        font-size: 13px;
+        padding: 10px 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        background: white;
+        height: 40px;
+      }
+
+      select:focus {
+        outline: none;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      }
+
+      .editor-container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+      }
+
+      textarea {
+        width: 100%;
+        font-size: 12px;
+        padding: 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        font-family: "Fira Code", "SF Mono", Consolas, monospace;
+        resize: none;
+        flex: 1;
+        background: #fafbfc;
+        line-height: 1.5;
+      }
+
+      textarea:focus {
+        outline: none;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      }
+
+      .readMeContainer h3 {
+        margin: 0 0 16px 0;
+        font-size: 16px;
+        color: #1f2937;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .readMeContainer p {
+        margin: 0 0 12px 0;
+        line-height: 1.6;
+      }
+
+      #readmeDefaultSnippet {
+        font-style: italic;
+        color: #9ca3af;
+      }
+
+      .status-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        font-size: 12px;
+        color: #6b7280;
+        border-top: 1px solid #f3f4f6;
+        margin-top: auto;
+      }
+
+      .serverBtn:first-child {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+      .serverBtn:last-child {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+
+      @media (max-width: 800px) {
         main {
-            display: flex;
-            flex-direction: row;
-            height: 100vh;
-            background: #ffffff;
-        }
-        
-        .mainGroupContainer {
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
-            gap: 16px;
-            flex: 2;
-            min-width: 0;
-        }
-        
-        .readMeContainer {
-            padding: 20px;
-            border-left: 1px solid #e0e0e0;
-            flex: 1;
-            font-size: 13px;
-            color: #666;
-            overflow-y: auto;
-            background: #fafbfc;
-            min-width: 250px;
-        }
-        
-        .toolbar {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-        
-        .toggle-group {
-            display: flex;
-            background: #f3f4f6;
-            border-radius: 8px;
-            padding: 2px;
-        }
-        
-        .toggle-btn {
-            padding: 8px 16px;
-            font-size: 13px;
-            font-weight: 500;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            background: transparent;
-            color: #6b7280;
-        }
-        
-        .toggle-btn.active {
-            background: #2563eb;
-            color: white;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-        
-        .primary-btn {
-            background-color: #2563eb;
-            border: none;
-            color: white;
-            padding: 10px 16px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: background-color 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        
-        .primary-btn:hover {
-            background-color: #1e4bb8;
-        }
-        
-        .save-btn {
-            background-color: #10b981;
-        }
-        
-        .save-btn:hover {
-            background-color: #059669;
-        }
-        
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-        
-        label {
-            font-weight: 600;
-            font-size: 13px;
-            color: #374151;
-        }
-        
-        select {
-            width: 100%;
-            font-size: 13px;
-            padding: 10px 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            background: white;
-            height: 40px;
-        }
-        
-        select:focus {
-            outline: none;
-            border-color: #2563eb;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
-        
-        .editor-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            min-height: 0;
-        }
-        
-        textarea {
-            width: 100%;
-            font-size: 12px;
-            padding: 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            font-family: "Fira Code", "SF Mono", Consolas, monospace;
-            resize: none;
-            flex: 1;
-            background: #fafbfc;
-            line-height: 1.5;
-        }
-        
-        textarea:focus {
-            outline: none;
-            border-color: #2563eb;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
-        
-        .readMeContainer h3 {
-            margin: 0 0 16px 0;
-            font-size: 16px;
-            color: #1f2937;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .readMeContainer p {
-            margin: 0 0 12px 0;
-            line-height: 1.6;
-        }
-        
-        #readmeDefaultSnippet {
-            font-style: italic;
-            color: #9ca3af;
-        }
-        
-        .status-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            font-size: 12px;
-            color: #6b7280;
-            border-top: 1px solid #f3f4f6;
-            margin-top: auto;
+          flex-direction: column;
         }
 
-        .serverBtn:first-child{
-          border-top-right-radius: 0;
-          border-bottom-right-radius: 0;
+        .readMeContainer {
+          border-left: none;
+          border-top: 1px solid #e0e0e0;
+          max-height: 200px;
         }
-        .serverBtn:last-child{
-          border-top-left-radius: 0;
-          border-bottom-left-radius: 0;
-        }
-        
-        @media (max-width: 800px) {
-            main {
-                flex-direction: column;
-            }
-            
-            .readMeContainer {
-                border-left: none;
-                border-top: 1px solid #e0e0e0;
-                max-height: 200px;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <main>
-        <section class="mainGroupContainer">
-            <div class="toolbar">
-                <button class="primary-btn" onclick="selectDirectoryAndUpdateConfigList()">
-                    📁 Select SPT Folder
-                </button>
-                
-                <div class="toggle-group">
-                    <button class="toggle-btn active serverBtn" id="serverToggle" onclick="toggleModType('server')">
-                        🖥️ Server Mods
-                    </button>
-                    <button class="toggle-btn serverBtn" id="clientToggle" onclick="toggleModType('client')">
-                        💻 Client Mods
-                    </button>
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <label for="file-select">Configuration Files:</label>
-                <select  onchange="loadConfig()" id="file-select">
-                    <option>Select a mod configuration...</option>
-                </select>
-            </div>
-            
-            <div class="form-group editor-container">
-                <label for="editor">Config Editor:</label>
-                <textarea
-                    id="editor"
-                    placeholder="Select a configuration file to load its content..."
-                    spellcheck="false"
-                ></textarea>
-            </div>
-            
-            <div class="toolbar">
-                <button class="primary-btn save-btn" onclick="saveConfig()">
-                    💾 Save Changes
-                </button>
-            </div>
-            
-            <div class="status-bar">
-                <span id="statusText">Ready</span>
-                <span id="modCount">0 mods found</span>
-            </div>
-        </section>
-        
-        <section class="readMeContainer">
-            <h3>📘 README</h3>
-            <p id="readmeField">
-                This tool helps you select, view, and edit configuration files from your SPT mods folder.
-                Use the buttons to load or save your changes.
-            </p>
-            <p id="readmeDefaultSnippet">
-                Future versions will support JSON schema validation and backups.
-            </p>
-        </section>
+      <section class="mainGroupContainer">
+        <div class="toolbar">
+          <button
+            class="primary-btn"
+            onclick="selectDirectoryAndUpdateConfigList()"
+          >
+            📁 Select SPT Folder
+          </button>
+
+          <div class="toggle-group">
+            <button
+              class="toggle-btn active serverBtn"
+              id="serverToggle"
+              onclick="toggleModType('server')"
+            >
+              🖥️ Server Mods
+            </button>
+            <button
+              class="toggle-btn serverBtn"
+              id="clientToggle"
+              onclick="toggleModType('client')"
+            >
+              💻 Client Mods
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="file-select">Configuration Files:</label>
+          <select class="empty" onchange="loadConfig()" id="file-select">
+            <option>Please set the server mod directory...</option>
+          </select>
+        </div>
+
+        <div class="form-group editor-container">
+          <label for="editor">Config Editor:</label>
+          <textarea
+            id="editor"
+            placeholder="Select a configuration file to load its content..."
+            spellcheck="false"
+          ></textarea>
+        </div>
+
+        <div class="toolbar">
+          <button class="primary-btn save-btn" onclick="saveConfig()">
+            💾 Save Changes
+          </button>
+        </div>
+
+        <div class="status-bar">
+          <span id="statusText">Ready</span>
+          <span id="modCount">0 config files found</span>
+        </div>
+      </section>
+
+      <section class="readMeContainer">
+        <h3>📘 README</h3>
+        <p id="readmeField">
+          This tool helps you select, view, and edit configuration files from
+          your SPT mods folder. Use the buttons to load or save your changes.
+        </p>
+        <p id="readmeDefaultSnippet">
+          Future versions will support JSON schema validation and backups.
+        </p>
+      </section>
+
+      <!-- modal -->
+      <div
+        id="modalOverlay"
+        style="
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0, 0, 0, 0.4);
+          justify-content: center;
+          align-items: center;
+          z-index: 1000;
+        "
+      >
+        <div
+          style="
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            width: 300px;
+            max-width: 90%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            text-align: center;
+          "
+        >
+          <p style="margin-bottom: 20px; font-size: 16px">
+            Please select a mod folder first.
+          </p>
+          <button
+            id="modalCloseBtn"
+            style="
+              padding: 8px 16px;
+              background: #2563eb;
+              color: white;
+              border: none;
+              border-radius: 6px;
+              cursor: pointer;
+              font-weight: 600;
+            "
+          >
+            OK
+          </button>
+        </div>
+      </div>
     </main>
 
     <script>
+      let currentModType = "server";
 
-              let currentModType = 'server';
-        
-        const toggleModType = (type) => {
-            currentModType = type;
-            
-            document.getElementById('serverToggle').classList.toggle('active', type === 'server');
-            document.getElementById('clientToggle').classList.toggle('active', type === 'client');
-            
-            document.getElementById('statusText').textContent = `Viewing ${type} mods`;
-            
-            populateConfigs();
+      function showModal() {
+        const modal = document.getElementById("modalOverlay");
+        modal.style.display = "flex";
+
+        const closeBtn = document.getElementById("modalCloseBtn");
+        closeBtn.focus();
+
+        closeBtn.onclick = () => {
+          modal.style.display = "none";
         };
+      }
 
+      const toggleModType = async (type) => {
+        //check the <select> classList for empty or populated classname
+        const selectClass = document.getElementById("file-select").classList;
+        currentModType = type;
+
+        if (selectClass.contains("empty")) {
+          showModal();
+          return;
+        }
+
+        document
+          .getElementById("serverToggle")
+          .classList.toggle("active", type === "server");
+        document
+          .getElementById("clientToggle")
+          .classList.toggle("active", type === "client");
+        document.getElementById(
+          "statusText"
+        ).textContent = `Viewing ${type} config files`;
+
+        try {
+          if (currentModType === "client") {
+            //scrape bepinex and update the view
+            await window.pywebview.api.scrape_bepinex();
+            await populateConfigs();
+            await loadConfig();
+            populateConfigs();
+          } else {
+            await window.pywebview.api.scrape_configs_from_mod_directory();
+            await populateConfigs();
+            await loadConfig();
+            populateConfigs();
+          }
+        } catch (error) {
+          console.error("error toggling mods", error);
+        }
+      };
 
       const populateConfigs = async () => {
         const select = document.getElementById("file-select");
+        select.className = "populated"; // set to populated once configs are loaded
         const editor = document.getElementById("editor");
         const configs = await window.pywebview.api.get_mod_configs();
 
@@ -297,14 +393,18 @@
           .join("");
 
         select.innerHTML = optionsHTML;
-        document.getElementById('modCount').textContent = `${configs.length} ${currentModType} mods loaded`;
+        document.getElementById(
+          "modCount"
+        ).textContent = `${configs.length} ${currentModType} mods loaded`;
       };
 
       const loadConfig = async () => {
         const select = document.getElementById("file-select");
         const editor = document.getElementById("editor");
         const readmeField = document.getElementById("readmeField");
-        const readmeDefaultSnippet = document.getElementById("readmeDefaultSnippet");
+        const readmeDefaultSnippet = document.getElementById(
+          "readmeDefaultSnippet"
+        );
         const configs = await window.pywebview.api.get_mod_configs();
 
         const selectedMod = select.value;
@@ -312,22 +412,29 @@
           (config) => config.mod_name === selectedMod
         );
 
- if (selectedConfig) {
-    editor.value = JSON.stringify(selectedConfig.config_data, null, 2);
-    
-    if (selectedConfig.mod_readme && selectedConfig.mod_readme.trim() !== '') {
-      readmeField.textContent = selectedConfig.mod_readme;
-      readmeDefaultSnippet.textContent = "";
-    } else {
-      readmeField.textContent = "This tool helps you select, view, and edit configuration files from your SPT mods folder. Use the buttons to load or save your changes.";
-      readmeDefaultSnippet.textContent = "Future versions will support JSON schema validation and backups.";
-    }
-  } else {
-    editor.value = "";
-    readmeField.textContent = "This tool helps you select, view, and edit configuration files from your SPT mods folder. Use the buttons to load or save your changes.";
-    readmeDefaultSnippet.textContent = "Future versions will support JSON schema validation and backups.";
-  }
-};
+        if (selectedConfig) {
+          editor.value = JSON.stringify(selectedConfig.config_data, null, 2);
+
+          if (
+            selectedConfig.mod_readme &&
+            selectedConfig.mod_readme.trim() !== ""
+          ) {
+            readmeField.textContent = selectedConfig.mod_readme;
+            readmeDefaultSnippet.textContent = "";
+          } else {
+            readmeField.textContent =
+              "This tool helps you select, view, and edit configuration files from your SPT mods folder. Use the buttons to load or save your changes.";
+            readmeDefaultSnippet.textContent =
+              "Future versions will support JSON schema validation and backups.";
+          }
+        } else {
+          editor.value = "";
+          readmeField.textContent =
+            "This tool helps you select, view, and edit configuration files from your SPT mods folder. Use the buttons to load or save your changes.";
+          readmeDefaultSnippet.textContent =
+            "Future versions will support JSON schema validation and backups.";
+        }
+      };
       // add support for toggling to bepinex configs
       const saveConfig = async () => {
         const select = document.getElementById("file-select");
@@ -360,7 +467,7 @@
 
       //   if (savedPath) {
       //     const result = await window.pywebview.api.set_spt_install_dir(savedPath);
-      //     await window.pywebview.api.scrape_configs_from_mod_direcory();
+      //     await window.pywebview.api.scrape_configs_from_mod_directory();
       //     const configs = await window.pywebview.api.get_mod_configs();
       //     populateConfigs(configs);
       //   }
@@ -368,11 +475,9 @@
 
       const selectDirectoryAndUpdateConfigList = async () => {
         const result = await window.pywebview.api.select_SPT_mods_directory();
-        console.log("selected folder path: ", result);
-
         if (result.status === "success") {
           localStorage.setItem("spt_dir", result.spt_dir);
-          await window.pywebview.api.scrape_configs_from_mod_direcory();
+          await window.pywebview.api.scrape_configs_from_mod_directory();
           await populateConfigs();
           await loadConfig();
         } else {

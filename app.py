@@ -27,8 +27,8 @@ class Api:
     def select_SPT_mods_directory(self):
         return select_SPT_mods_directory()
 
-    def scrape_configs_from_mod_direcory(self):
-        return scrape_configs_from_mod_direcory()
+    def scrape_configs_from_mod_directory(self):
+        return scrape_configs_from_mod_directory()
 
     def write_config(self, config_path, data):
         return write_config(config_path, data)
@@ -99,7 +99,7 @@ def scrape_bepinex():
             print(f"No config.json found in {bepinex_config_folder}")
 
 
-def scrape_configs_from_mod_direcory():
+def scrape_configs_from_mod_directory():
     mod_configs.clear()
     for folder in mod_folders:
         possible_paths = [
