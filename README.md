@@ -48,20 +48,20 @@ cd SPTweak
 
     On Windows:
 
-python -m venv venv
-venv\Scripts\activate
+    python -m venv venv
+    venv\Scripts\activate
 
     On macOS/Linux:
 
-python3 -m venv venv
-source venv/bin/activate
+    python3 -m venv venv
+    source venv/bin/activate
 
     Install dependencies:
 
-pip install -r requirements.txt
+    pip install -r requirements.txt
 
     Run the Flask server:
 
-python app.py
+    python app.py
 
     or build the app using pyinstaller
